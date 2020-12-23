@@ -62,7 +62,6 @@ class MethodChannelLocation extends LocationPlatform {
     return _methodChannel!
         .invokeMethod<int>('isBackgroundModeEnabled')
         .then((value) => value != null && value == 1);
-    ;
   }
 
   /// Enables or disables service in the background mode.

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:location_example/enable_in_background.dart';
