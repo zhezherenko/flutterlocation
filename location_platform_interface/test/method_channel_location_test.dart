@@ -13,9 +13,9 @@ import 'package:mockito/mockito.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannel methodChannel;
-  MockEventChannel eventChannel;
-  MethodChannelLocation location;
+  MethodChannel? methodChannel;
+  MockEventChannel? eventChannel;
+  late MethodChannelLocation location;
 
   final List<MethodCall> log = <MethodCall>[];
 
@@ -24,7 +24,7 @@ void main() {
     eventChannel = MockEventChannel();
     location = MethodChannelLocation.private(methodChannel, eventChannel);
 
-    methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+    methodChannel!.setMockMethodCallHandler((MethodCall methodCall) async {
       log.add(methodCall);
       switch (methodCall.method) {
         case 'getLocation':
@@ -79,7 +79,7 @@ void main() {
 
   group('Permission Status', () {
     test('Should convert int to correct Permission Status', () async {
-      methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+      methodChannel!.setMockMethodCallHandler((MethodCall methodCall) async {
         return 0;
       });
       PermissionStatus receivedPermission = await location.hasPermission();
@@ -87,7 +87,7 @@ void main() {
       receivedPermission = await location.requestPermission();
       expect(receivedPermission, PermissionStatus.denied);
 
-      methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+      methodChannel!.setMockMethodCallHandler((MethodCall methodCall) async {
         return 1;
       });
       receivedPermission = await location.hasPermission();
@@ -95,7 +95,7 @@ void main() {
       receivedPermission = await location.requestPermission();
       expect(receivedPermission, PermissionStatus.granted);
 
-      methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+      methodChannel!.setMockMethodCallHandler((MethodCall methodCall) async {
         return 2;
       });
       receivedPermission = await location.hasPermission();
@@ -103,7 +103,7 @@ void main() {
       receivedPermission = await location.requestPermission();
       expect(receivedPermission, PermissionStatus.deniedForever);
 
-      methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+      methodChannel!.setMockMethodCallHandler((MethodCall methodCall) async {
         return 3;
       });
       receivedPermission = await location.hasPermission();
@@ -113,7 +113,7 @@ void main() {
     });
 
     test('Should throw if other message is sent', () async {
-      methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+      methodChannel!.setMockMethodCallHandler((MethodCall methodCall) async {
         return 12;
       });
       try {
@@ -130,11 +130,11 @@ void main() {
   });
 
   group('Location Updates', () {
-    StreamController<Map<String, double>> controller;
+    late StreamController<Map<String, double>> controller;
 
     setUp(() {
       controller = StreamController<Map<String, double>>();
-      when(eventChannel.receiveBroadcastStream())
+      when(eventChannel!.receiveBroadcastStream())
           .thenAnswer((Invocation invoke) => controller.stream);
     });
 
@@ -146,7 +146,7 @@ void main() {
       location.onLocationChanged;
       location.onLocationChanged;
       location.onLocationChanged;
-      verify(eventChannel.receiveBroadcastStream()).called(1);
+      verify(eventChannel!.receiveBroadcastStream()).called(1);
     });
 
     test('should receive values', () async {

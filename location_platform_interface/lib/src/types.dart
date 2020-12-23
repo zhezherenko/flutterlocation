@@ -11,7 +11,8 @@ class LocationData {
   LocationData._(this.latitude, this.longitude, this.accuracy, this.altitude,
       this.speed, this.speedAccuracy, this.heading, this.time);
 
-  factory LocationData.fromMap(Map<String, double> dataMap) {
+  /// Create a Location Data object from a map
+  factory LocationData.fromMap(Map<String, double?> dataMap) {
     return LocationData._(
       dataMap['latitude'],
       dataMap['longitude'],
@@ -25,38 +26,38 @@ class LocationData {
   }
 
   /// Latitude in degrees
-  final double latitude;
+  final double? latitude;
 
   /// Longitude, in degrees
-  final double longitude;
+  final double? longitude;
 
   /// Estimated horizontal accuracy of this location, radial, in meters
   ///
   /// Always 0 on Web
-  final double accuracy;
+  final double? accuracy;
 
   /// In meters above the WGS 84 reference ellipsoid
   ///
   /// Always 0 on Web
-  final double altitude;
+  final double? altitude;
 
   /// In meters/second
   ///
   /// Always 0 on Web
-  final double speed;
+  final double? speed;
 
   /// In meters/second
   ///
   /// Always 0 on Web and iOS
-  final double speedAccuracy;
+  final double? speedAccuracy;
 
   /// Heading is the horizontal direction of travel of this device, in degrees
   ///
   /// Always 0 on Web
-  final double heading;
+  final double? heading;
 
   /// timestamp of the LocationData
-  final double time;
+  final double? time;
 
   @override
   String toString() => 'LocationData<lat: $latitude, long: $longitude>';
@@ -109,7 +110,7 @@ enum LocationAccuracy {
   navigation,
 }
 
-// Status of a permission request to use location services.
+/// Status of a permission request to use location services.
 enum PermissionStatus {
   /// The permission to use location services has been granted for high accuracy.
   granted,

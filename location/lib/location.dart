@@ -3,12 +3,16 @@ import 'package:location_platform_interface/location_platform_interface.dart';
 export 'package:location_platform_interface/location_platform_interface.dart'
     show PermissionStatus, LocationAccuracy, LocationData;
 
-class Location {
+/// The web implementation of [LocationPlatform].
+///
+/// This class implements the `package:location` functionality for Android and iOS.
+class Location implements LocationPlatform {
   /// Initializes the plugin and starts listening for potential platform events.
   factory Location() => instance;
 
   Location._();
 
+  /// Instance of Location
   static final Location instance = Location._();
 
   /// Change settings of the location request.
@@ -36,7 +40,7 @@ class Location {
   }
 
   /// Enables or disables service in the background mode.
-  Future<bool> enableBackgroundMode({bool enable}) {
+  Future<bool> enableBackgroundMode({required bool enable}) {
     return LocationPlatform.instance.enableBackgroundMode(enable: enable);
   }
 

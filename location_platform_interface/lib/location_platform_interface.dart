@@ -1,14 +1,23 @@
 library location_platform_interface;
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 part 'src/method_channel_location.dart';
 part 'src/types.dart';
 
+/// The interface that implementations of location must implement.
+///
+/// Platform implementations should extend this class rather than implement it as `location`
+/// does not consider newly added methods to be breaking changes. Extending this class
+/// (using `extends`) ensures that the subclass will get the default implementation, while
+/// platform implementations that `implements` this interface will be broken by newly added
+/// [LocationPlatform] methods.
 class LocationPlatform extends PlatformInterface {
+  /// Constructs a LocationPlatform.
   LocationPlatform() : super(token: _token);
 
   static final Object _token = Object();
@@ -36,9 +45,9 @@ class LocationPlatform extends PlatformInterface {
   /// [LocationData]. The [interval] and [distanceFilter] are controlling how
   /// often a new location is sent through [onLocationChanged].
   Future<bool> changeSettings({
-    LocationAccuracy accuracy,
-    int interval,
-    double distanceFilter,
+    required LocationAccuracy accuracy,
+    required int interval,
+    required double distanceFilter,
   }) {
     throw UnimplementedError();
   }
@@ -49,7 +58,7 @@ class LocationPlatform extends PlatformInterface {
   }
 
   /// Enables or disables service in the background mode.
-  Future<bool> enableBackgroundMode({bool enable}) {
+  Future<bool> enableBackgroundMode({required bool enable}) {
     throw UnimplementedError();
   }
 

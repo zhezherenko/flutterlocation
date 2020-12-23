@@ -20,7 +20,7 @@ class MethodChannelLocation extends LocationPlatform {
       const EventChannel eventChannel = EventChannel('lyokone/locationstream');
       _instance = MethodChannelLocation.private(methodChannel, eventChannel);
     }
-    return _instance;
+    return _instance!;
   }
 
   /// This constructor is only used for testing and shouldn't be accessed by
@@ -28,12 +28,12 @@ class MethodChannelLocation extends LocationPlatform {
   @visibleForTesting
   MethodChannelLocation.private(this._methodChannel, this._eventChannel);
 
-  static MethodChannelLocation _instance;
+  static MethodChannelLocation? _instance;
 
-  final MethodChannel _methodChannel;
-  final EventChannel _eventChannel;
+  final MethodChannel? _methodChannel;
+  final EventChannel? _eventChannel;
 
-  Stream<LocationData> _onLocationChanged;
+  Stream<LocationData>? _onLocationChanged;
 
   /// Change settings of the location request.
   ///
@@ -45,31 +45,33 @@ class MethodChannelLocation extends LocationPlatform {
     LocationAccuracy accuracy = LocationAccuracy.high,
     int interval = 1000,
     double distanceFilter = 0,
-  }) async {
-    final int result = await _methodChannel.invokeMethod(
+  }) {
+    return _methodChannel!.invokeMethod<int>(
       'changeSettings',
-      <String, dynamic>{'accuracy': accuracy.index, 'interval': interval, 'distanceFilter': distanceFilter},
-    );
-
-    return result == 1;
+      <String, dynamic>{
+        'accuracy': accuracy.index,
+        'interval': interval,
+        'distanceFilter': distanceFilter
+      },
+    ).then((value) => value != null && value == 1);
   }
 
   /// Checks if service is enabled in the background mode.
   @override
   Future<bool> isBackgroundModeEnabled() async {
-    final int result = await _methodChannel.invokeMethod('isBackgroundModeEnabled');
-    return result == 1;
+    return _methodChannel!
+        .invokeMethod<int>('isBackgroundModeEnabled')
+        .then((value) => value != null && value == 1);
+    ;
   }
 
   /// Enables or disables service in the background mode.
   @override
-  Future<bool> enableBackgroundMode({bool enable}) async {
-    final int result = await _methodChannel.invokeMethod(
+  Future<bool> enableBackgroundMode({required bool enable}) async {
+    return _methodChannel!.invokeMethod<int>(
       'enableBackgroundMode',
       <String, dynamic>{'enable': enable},
-    );
-
-    return result == 1;
+    ).then((value) => value != null && value == 1);
   }
 
   /// Gets the current location of the user.
@@ -78,23 +80,24 @@ class MethodChannelLocation extends LocationPlatform {
   /// Returns a [LocationData] object.
   @override
   Future<LocationData> getLocation() async {
-    final Map<String, double> resultMap = await _methodChannel.invokeMapMethod('getLocation');
+    final Map<String, double> resultMap = await (_methodChannel!
+        .invokeMapMethod('getLocation') as FutureOr<Map<String, double>>);
     return LocationData.fromMap(resultMap);
   }
 
   @override
   Future<PermissionStatus> hasPermission() async {
-    final int result = await _methodChannel.invokeMethod('hasPermission');
+    final int? result = await _methodChannel!.invokeMethod('hasPermission');
     return _parsePermissionStatus(result);
   }
 
   @override
   Future<PermissionStatus> requestPermission() async {
-    final int result = await _methodChannel.invokeMethod('requestPermission');
+    final int? result = await _methodChannel!.invokeMethod('requestPermission');
     return _parsePermissionStatus(result);
   }
 
-  PermissionStatus _parsePermissionStatus(int result) {
+  PermissionStatus _parsePermissionStatus(int? result) {
     switch (result) {
       case 0:
         return PermissionStatus.denied;
@@ -115,15 +118,17 @@ class MethodChannelLocation extends LocationPlatform {
   /// Checks if the location service is enabled.
   @override
   Future<bool> serviceEnabled() async {
-    final int result = await _methodChannel.invokeMethod('serviceEnabled');
-    return result == 1;
+    return _methodChannel!
+        .invokeMethod<int>('serviceEnabled')
+        .then((value) => value != null && value == 1);
   }
 
   /// Request the activation of the location service.
   @override
   Future<bool> requestService() async {
-    final int result = await _methodChannel.invokeMethod('requestService');
-    return result == 1;
+    return _methodChannel!
+        .invokeMethod<int>('requestService')
+        .then((value) => value != null && value == 1);
   }
 
   /// Returns a stream of [LocationData] objects. The frequency and accuracy of
@@ -132,8 +137,9 @@ class MethodChannelLocation extends LocationPlatform {
   /// Throws an error if the app has no permission to access location.
   @override
   Stream<LocationData> get onLocationChanged {
-    return _onLocationChanged ??= _eventChannel
+    return _onLocationChanged ??= _eventChannel!
         .receiveBroadcastStream()
-        .map<LocationData>((dynamic element) => LocationData.fromMap(Map<String, double>.from(element)));
+        .map<LocationData>((dynamic element) =>
+            LocationData.fromMap(Map<String, double>.from(element)));
   }
 }

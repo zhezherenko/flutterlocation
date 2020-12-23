@@ -3,26 +3,31 @@ import 'dart:html' as js;
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:location_platform_interface/location_platform_interface.dart';
 
+/// The web implementation of [LocationPlatform].
+///
+/// This class implements the `package:location` functionality for the web.
 class LocationWebPlugin extends LocationPlatform {
+  /// A constructor that allows to use the Location Plugin on the web
   LocationWebPlugin(js.Navigator navigator)
       : _geolocation = navigator.geolocation,
         _permissions = navigator.permissions,
         _accuracy = LocationAccuracy.high;
 
   final js.Geolocation _geolocation;
-  final js.Permissions _permissions;
+  final js.Permissions? _permissions;
 
   LocationAccuracy _accuracy;
 
+  /// Registers this class as the default instance of [LocationPlatform].
   static void registerWith(Registrar registrar) {
     LocationPlatform.instance = LocationWebPlugin(js.window.navigator);
   }
 
   @override
   Future<bool> changeSettings({
-    LocationAccuracy accuracy,
-    int interval,
-    double distanceFilter,
+    required LocationAccuracy accuracy,
+    required int interval,
+    required double distanceFilter,
   }) async {
     _accuracy = accuracy;
     return true;
@@ -39,8 +44,12 @@ class LocationWebPlugin extends LocationPlatform {
 
   @override
   Future<PermissionStatus> hasPermission() async {
-    final js.PermissionStatus result =
-        await _permissions.query(<String, String>{'name': 'geolocation'});
+    final js.PermissionStatus? result =
+        await _permissions?.query(<String, String>{'name': 'geolocation'});
+
+    if (result == null) {
+      throw ArgumentError("Couldn't get permission state from browser");
+    }
 
     switch (result.state) {
       case 'granted':
@@ -83,15 +92,15 @@ class LocationWebPlugin extends LocationPlatform {
   }
 
   LocationData _toLocationData(js.Geoposition result) {
-    return LocationData.fromMap(<String, double>{
-      'latitude': result.coords.latitude,
-      'longitude': result.coords.longitude,
+    return LocationData.fromMap(<String, double?>{
+      'latitude': result.coords?.latitude?.toDouble(),
+      'longitude': result.coords?.longitude?.toDouble(),
       'accuracy': 0,
       'altitude': 0,
       'speed': 0,
       'speed_accuracy': 0,
       'heading': 0,
-      'time': result.timestamp.toDouble(),
+      'time': result.timestamp?.toDouble(),
     });
   }
 }
