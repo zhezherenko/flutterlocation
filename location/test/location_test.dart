@@ -1,3 +1,6 @@
+// TODO(Lyokone): Remove once Mockito is migrated to null safety.
+// @dart = 2.9
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -105,7 +108,7 @@ void main() {
         'latitude': 42.8534,
         'longitude': 23.3488,
       }));
-      controller.close();
+      await controller.close();
 
       await expectLater(
         location.onLocationChanged,
