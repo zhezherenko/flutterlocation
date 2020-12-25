@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class ServiceEnabledWidget extends StatefulWidget {
-  const ServiceEnabledWidget({Key key}) : super(key: key);
+  const ServiceEnabledWidget({Key? key}) : super(key: key);
 
   @override
   _ServiceEnabledState createState() => _ServiceEnabledState();
@@ -13,7 +13,7 @@ class ServiceEnabledWidget extends StatefulWidget {
 class _ServiceEnabledState extends State<ServiceEnabledWidget> {
   final Location location = Location();
 
-  bool _serviceEnabled;
+  bool? _serviceEnabled;
 
   Future<void> _checkService() async {
     final bool serviceEnabledResult = await location.serviceEnabled();
@@ -23,14 +23,15 @@ class _ServiceEnabledState extends State<ServiceEnabledWidget> {
   }
 
   Future<void> _requestService() async {
-    if (_serviceEnabled == null || !_serviceEnabled) {
-      final bool serviceRequestedResult = await location.requestService();
-      setState(() {
-        _serviceEnabled = serviceRequestedResult;
-      });
-      if (!serviceRequestedResult) {
-        return;
-      }
+    if (_serviceEnabled != null && _serviceEnabled != false) {
+      return;
+    }
+    final bool serviceRequestedResult = await location.requestService();
+    setState(() {
+      _serviceEnabled = serviceRequestedResult;
+    });
+    if (!serviceRequestedResult) {
+      return;
     }
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 
 class EnableInBackgroundWidget extends StatefulWidget {
-  const EnableInBackgroundWidget({Key key}) : super(key: key);
+  const EnableInBackgroundWidget({Key? key}) : super(key: key);
 
   @override
   _EnableInBackgroundState createState() => _EnableInBackgroundState();
@@ -14,8 +14,8 @@ class EnableInBackgroundWidget extends StatefulWidget {
 class _EnableInBackgroundState extends State<EnableInBackgroundWidget> {
   final Location location = Location();
 
-  bool _enabled;
-  String _error;
+  bool? _enabled;
+  String? _error;
 
   @override
   void initState() {

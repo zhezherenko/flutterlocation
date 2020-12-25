@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class PermissionStatusWidget extends StatefulWidget {
-  const PermissionStatusWidget({Key key}) : super(key: key);
+  const PermissionStatusWidget({Key? key}) : super(key: key);
 
   @override
   _PermissionStatusState createState() => _PermissionStatusState();
@@ -13,7 +13,7 @@ class PermissionStatusWidget extends StatefulWidget {
 class _PermissionStatusState extends State<PermissionStatusWidget> {
   final Location location = Location();
 
-  PermissionStatus _permissionGranted;
+  PermissionStatus? _permissionGranted;
 
   Future<void> _checkPermissions() async {
     final PermissionStatus permissionGrantedResult =

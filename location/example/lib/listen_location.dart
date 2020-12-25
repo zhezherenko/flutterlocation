@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class ListenLocationWidget extends StatefulWidget {
-  const ListenLocationWidget({Key key}) : super(key: key);
+  const ListenLocationWidget({Key? key}) : super(key: key);
 
   @override
   _ListenLocationState createState() => _ListenLocationState();
@@ -15,9 +15,9 @@ class ListenLocationWidget extends StatefulWidget {
 class _ListenLocationState extends State<ListenLocationWidget> {
   final Location location = Location();
 
-  LocationData _location;
-  StreamSubscription<LocationData> _locationSubscription;
-  String _error;
+  LocationData? _location;
+  StreamSubscription<LocationData>? _locationSubscription;
+  String? _error;
 
   Future<void> _listenLocation() async {
     _locationSubscription =
@@ -25,7 +25,7 @@ class _ListenLocationState extends State<ListenLocationWidget> {
       setState(() {
         _error = err.code;
       });
-      _locationSubscription.cancel();
+      _locationSubscription?.cancel();
     }).listen((LocationData currentLocation) {
       setState(() {
         _error = null;
@@ -36,7 +36,7 @@ class _ListenLocationState extends State<ListenLocationWidget> {
   }
 
   Future<void> _stopListen() async {
-    _locationSubscription.cancel();
+    _locationSubscription?.cancel();
   }
 
   @override

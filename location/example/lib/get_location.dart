@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 
 class GetLocationWidget extends StatefulWidget {
-  const GetLocationWidget({Key key}) : super(key: key);
+  const GetLocationWidget({Key? key}) : super(key: key);
 
   @override
   _GetLocationState createState() => _GetLocationState();
@@ -14,8 +14,8 @@ class GetLocationWidget extends StatefulWidget {
 class _GetLocationState extends State<GetLocationWidget> {
   final Location location = Location();
 
-  LocationData _location;
-  String _error;
+  LocationData? _location;
+  String? _error;
 
   Future<void> _getLocation() async {
     setState(() {
