@@ -1,7 +1,6 @@
 name: location
 description: A Flutter plugin to easily handle realtime location in iOS and Android. Provides settings for optimizing performance or battery.
-version: 4.0.0-nullsafety.1
-author: Guillaume Bernos <guillaume@bernos.dev>
+version: 4.0.0-nullsafety.0
 homepage: https://github.com/Lyokone/flutterlocation
 
 flutter:
@@ -31,6 +30,7 @@ dev_dependencies:
   mockito: ^5.0.0-nullsafety
   pedantic: ^1.10.0-nullsafety
   test: ^1.16.0-nullsafety
+  plugin_platform_interface: ^1.1.0-nullsafety
 
 environment:
   sdk: ">=2.12.0-0 <3.0.0"

@@ -1,6 +1,11 @@
-## 1.0.1 07th December 2020
+## 2.0.0-nullsafety.0 - 25th December 2020
+
+- Initial support for null safety
+
+## 1.0.1 - 07th December 2020
+
 - Update Android SDK to Android 10/Q (API level 29)
 
-## 1.0.0 26th March 2020
+## 1.0.0 - 26th March 2020
 
 - First release of the Web platform of the Location plugin (huge thanks to long1eu)

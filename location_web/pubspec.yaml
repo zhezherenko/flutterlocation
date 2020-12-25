@@ -1,7 +1,7 @@
 name: location_web
 description: The web implementation of the location plugin.
 homepage: https://github.com/Lyokone/flutterlocation
-version: 2.0.0-nullsafety.1
+version: 2.0.0-nullsafety.0
 
 flutter:
   plugin:
